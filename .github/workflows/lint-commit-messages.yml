@@ -1,0 +1,12 @@
+name: Lint commit messages
+on:
+  push:
+    branches:
+      - main
+      - beta
+      - 'renovate/**'
+      - 'github-renovate/**'
+  pull_request:
+jobs:
+  lint-commit-messages:
+    uses: vidavidorra/.github/.github/workflows/lint-commit-messages.yml@7603b00a274e24cb442908b827f1626d4e02fc67 # tag=v1.2.2

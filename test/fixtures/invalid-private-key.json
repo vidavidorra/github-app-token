@@ -1,0 +1,48 @@
+[
+  {
+    "scope": "https://api.github.com:443",
+    "method": "GET",
+    "path": "/app/installations",
+    "body": "",
+    "status": 401,
+    "response": {
+      "message": "A JSON web token could not be decoded",
+      "documentation_url": "https://docs.github.com/rest"
+    },
+    "rawHeaders": [
+      "Server",
+      "GitHub.com",
+      "Date",
+      "Sun, 31 Jul 2022 12:30:55 GMT",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Content-Length",
+      "102",
+      "X-GitHub-Media-Type",
+      "github.v3; format=json",
+      "Access-Control-Expose-Headers",
+      "ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset",
+      "Access-Control-Allow-Origin",
+      "*",
+      "Strict-Transport-Security",
+      "max-age=31536000; includeSubdomains; preload",
+      "X-Frame-Options",
+      "deny",
+      "X-Content-Type-Options",
+      "nosniff",
+      "X-XSS-Protection",
+      "0",
+      "Referrer-Policy",
+      "origin-when-cross-origin, strict-origin-when-cross-origin",
+      "Content-Security-Policy",
+      "default-src 'none'",
+      "Vary",
+      "Accept-Encoding, Accept, X-Requested-With",
+      "X-GitHub-Request-Id",
+      "C6A6:7A4F:769055:875AC9:62E675FF",
+      "connection",
+      "close"
+    ],
+    "responseIsBinary": false
+  }
+]

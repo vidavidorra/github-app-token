@@ -1,0 +1,69 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+      - beta
+      - 'renovate/**'
+      - 'github-renovate/**'
+  pull_request:
+jobs:
+  lint:
+    uses: vidavidorra/.github/.github/workflows/node-lint.yml@6806ef65ed548aeab950f9141e7ebc5bc0681809 # tag=v1.2.3
+  build:
+    uses: vidavidorra/.github/.github/workflows/node-build.yml@6806ef65ed548aeab950f9141e7ebc5bc0681809 # tag=v1.2.3
+  test:
+    uses: vidavidorra/.github/.github/workflows/node-test.yml@6806ef65ed548aeab950f9141e7ebc5bc0681809 # tag=v1.2.3
+  code-coverage:
+    needs: [lint, build, test]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
+      - name: Setup node
+        uses: actions/setup-node@56337c425554a6be30cdef71bf441f15be286854 # tag=v3.1.1
+        with:
+          node-version: 16
+      - name: Install project
+        run: npm ci --ignore-scripts
+      - name: Test
+        run: npm test
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@81cd2dc8148241f03f5839d295e000b8f761e378 # tag=v3.1.0
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage/cobertura-coverage.xml
+  release:
+    needs: [lint, build, test, code-coverage]
+    runs-on: ubuntu-latest
+    # GitHub API requests can easy take a couple of seconds and the release can
+    # make lots of API requests when a release has a lot of commits. If every
+    # requests takes five seconds, which is on the high side for a request, this
+    # could perform 180 requests. This should be enough for most use cases.
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
+        with:
+          # Make sure the release step uses its own credentials.
+          persist-credentials: false
+      - name: Setup node
+        uses: actions/setup-node@56337c425554a6be30cdef71bf441f15be286854 # tag=v3.1.1
+        with:
+          node-version: 16
+      - name: Install project
+        run: npm ci --ignore-scripts
+      - name: Build
+        run: npm run build
+      - name: GitHub App token
+        id: app-token
+        uses: ./
+        with:
+          appId: ${{ secrets.APP_ID }}
+          privateKey: ${{ secrets.PRIVATE_KEY }}
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+        run: npx --no-install semantic-release

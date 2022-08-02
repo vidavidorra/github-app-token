@@ -1,0 +1,34 @@
+name: GitHub App token
+author: Jeroen de Bruijn
+description: GitHub Action to to authenticate as a GitHub App
+inputs:
+  appId:
+    description: 'ID of the GitHub App'
+    required: true
+  privateKey:
+    description: 'private key of the GitHub App in PEM format'
+    required: true
+  repositories:
+    description: 'repositories to authenticate for'
+    required: false
+    default: ${{ github.event.repository.name }}
+  owner:
+    description: 'owner of the repositories to authenticate for'
+    required: false
+    default: ${{ github.repository_owner }}
+  installationId:
+    description: 'installation ID of the GitHub App installation'
+    required: false
+outputs:
+  token:
+    description: 'GitHub App installation access token'
+  createdAt:
+    description: 'creation date of the token'
+  expiresAt:
+    description: 'expiration date of the token'
+runs:
+  using: node16
+  main: dist/github-action.js
+branding:
+  icon: lock
+  color: blue
