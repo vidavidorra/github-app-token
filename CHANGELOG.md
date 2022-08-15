@@ -1,3 +1,9 @@
+## [1.0.0-beta.4](https://github.com/vidavidorra/github-app-token/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2022-08-15)
+
+### Continuous Integration
+
+- release with vidavidorra release app as author ([e330c35](https://github.com/vidavidorra/github-app-token/commit/e330c35195368c40a871fee5876ccd92fd76fe20))
+
 ## [1.0.0-beta.3](https://github.com/vidavidorra/github-app-token/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2022-08-15)
 
 ### Continuous Integration
