@@ -52,6 +52,8 @@ jobs:
         run: # Some command using ${{ steps.app-token.outputs.token }}
 ```
 
+<a name="inputs"></a>
+
 #### Inputs <!-- omit in toc -->
 
 | name                     | type    | required | description                                               |
@@ -75,7 +77,7 @@ jobs:
 
 ### API
 
-...
+The `authenticate` function is exported, with the same [Inputs](#inputs) as the [GitHub Action](#github-action).
 
 ## Contributing
 
