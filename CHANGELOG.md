@@ -1,3 +1,9 @@
+## [1.0.0-beta.3](https://github.com/vidavidorra/github-app-token/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2022-08-15)
+
+### Continuous Integration
+
+- add `dist` folder to git after bundling ([a71bc79](https://github.com/vidavidorra/github-app-token/commit/a71bc79ff45d7e9bcad85bbd23024ca00da68de9))
+
 ## [1.0.0-beta.2](https://github.com/vidavidorra/github-app-token/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2022-08-15)
 
 ### Features
