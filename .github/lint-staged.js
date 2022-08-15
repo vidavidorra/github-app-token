@@ -3,7 +3,9 @@ const config = {
     'xo --fix',
     () => 'ava',
     () => 'npm run bundle-github-action',
-    () => 'prettier --write test/fixtures/',
+    () => 'git add ./dist',
+    () => 'prettier --write ./test/fixtures/',
+    () => 'git add ./test/fixtures',
   ],
   '*.{vue,css,less,scss,html,htm,json,md,markdown,yml,yaml}':
     'prettier --write',

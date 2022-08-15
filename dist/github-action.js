@@ -15426,43 +15426,6 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
 // src/authenticate.ts
 var import_auth_app = __toESM(require_dist_node29(), 1);
 var import_github = __toESM(require_github(), 1);
-async function authenticate(options2) {
-  const auth = (0, import_auth_app.createAppAuth)({
-    appId: options2.appId,
-    privateKey: options2.privateKey
-  });
-  const appAuth = await auth({ type: "app" });
-  const octokit = (0, import_github.getOctokit)(appAuth.token);
-  let { installationId } = options2;
-  if (installationId === void 0) {
-    const installations = await octokit.rest.apps.listInstallations();
-    if (installations.data.length === 0) {
-      throw new Error("The GitHub App must have at least one installation");
-    }
-    if (options2.owner === void 0 && installations.data.length > 1) {
-      throw new Error('Without "owner", the GitHub App must have exactly one installation');
-    }
-    if (options2.owner === void 0) {
-      installationId = installations.data.at(0)?.id;
-    } else {
-      const installation = installations.data.find((installation2) => installation2.account?.login === options2.owner || installation2.account?.slug === options2.owner);
-      if (installation === void 0) {
-        throw new Error('The "owner" must have the GitHub App installed');
-      }
-      installationId = installation.id;
-    }
-  }
-  const installationAuth = await auth({
-    installationId,
-    type: "installation",
-    repositoryNames: [...options2.repositories]
-  });
-  return {
-    token: installationAuth.token,
-    createdAt: installationAuth.createdAt,
-    expiresAt: installationAuth.expiresAt
-  };
-}
 
 // node_modules/zod/lib/index.mjs
 var util;
@@ -18249,8 +18212,82 @@ var options = mod.object({
   }),
   repositories: mod.preprocess((arg) => Array.isArray(arg) ? new Set(arg) : arg, mod.set(mod.string().regex(/^[\w.-]+$/)).min(1)),
   owner: mod.string().min(1).optional(),
-  installationId: mod.preprocess(stringArgToNumber, mod.number().int().positive().optional()).optional()
+  installationId: mod.preprocess(stringArgToNumber, mod.number().int().positive().optional()).optional(),
+  includeUserInformation: mod.boolean().default(false)
 });
+
+// src/authenticate.ts
+var Authenticate = class {
+  _options;
+  constructor(options2) {
+    this._options = options.parse(options2);
+  }
+  async authenticate() {
+    const auth = (0, import_auth_app.createAppAuth)({
+      appId: this._options.appId,
+      privateKey: this._options.privateKey
+    });
+    const appAuth = await auth({ type: "app" });
+    const octokit = (0, import_github.getOctokit)(appAuth.token);
+    const installationId = await this.installationId(octokit);
+    const installationAuth = await auth({
+      installationId,
+      type: "installation",
+      repositoryNames: [...this._options.repositories]
+    });
+    const installationAuthentication = {
+      token: installationAuth.token,
+      createdAt: installationAuth.createdAt,
+      expiresAt: installationAuth.expiresAt,
+      includesUserInformation: false
+    };
+    if (this._options.includeUserInformation) {
+      const userInformation = await this.userInformation(octokit, installationAuthentication.token);
+      if (userInformation !== void 0) {
+        return {
+          ...installationAuthentication,
+          includesUserInformation: true,
+          username: userInformation.username,
+          email: userInformation.email
+        };
+      }
+    }
+    return installationAuthentication;
+  }
+  async installationId(octokit) {
+    if (this._options.installationId !== void 0) {
+      return this._options.installationId;
+    }
+    const installations = await octokit.rest.apps.listInstallations();
+    if (installations.data.length === 0) {
+      throw new Error("The GitHub App must have at least one installation");
+    }
+    if (this._options.owner === void 0 && installations.data.length > 1) {
+      throw new Error('Without "owner", the GitHub App must have exactly one installation');
+    }
+    if (this._options.owner === void 0) {
+      return installations.data[0].id;
+    }
+    const installation = installations.data.find((installation2) => installation2.account?.login === this._options.owner || installation2.account?.slug === this._options.owner);
+    if (installation === void 0) {
+      throw new Error('The "owner" must have the GitHub App installed');
+    }
+    return installation.id;
+  }
+  async userInformation(octokit, token) {
+    const app = await octokit.rest.apps.getAuthenticated();
+    if (app.data.slug === void 0) {
+      return void 0;
+    }
+    const username = `${app.data.slug}[bot]`;
+    const user = await (0, import_github.getOctokit)(token).rest.users.getByUsername({ username });
+    const email = `${user.data.id}+${username}@users.noreply.github.com`;
+    return { username, email };
+  }
+};
+async function authenticate(options2) {
+  return new Authenticate(options2).authenticate();
+}
 
 // src/github-action.ts
 var import_core = __toESM(require_core(), 1);
@@ -18259,16 +18296,19 @@ async function run(auth) {
     const inputs = {
       appId: import_core.default.getInput("appId", { required: true }),
       privateKey: import_core.default.getInput("privateKey", { required: true }),
-      repositories: import_core.default.getMultilineInput("repositories", { required: true }),
+      repositories: new Set(import_core.default.getMultilineInput("repositories", { required: true })),
       owner: import_core.default.getInput("owner"),
-      installationId: import_core.default.getInput("installationId")
+      installationId: import_core.default.getInput("installationId"),
+      includeUserInformation: import_core.default.getBooleanInput("includeUserInformation")
     };
-    const parsedOptions = options.parse(inputs);
-    const installationAuth = await auth(parsedOptions);
+    const installationAuth = await auth(inputs);
     import_core.default.setOutput("token", installationAuth.token);
     import_core.default.setOutput("createdAt", installationAuth.createdAt);
     import_core.default.setOutput("expiresAt", installationAuth.expiresAt);
-    return installationAuth;
+    if (installationAuth.includesUserInformation) {
+      import_core.default.setOutput("username", installationAuth.username);
+      import_core.default.setOutput("email", installationAuth.email);
+    }
   } catch (error) {
     import_core.default.setFailed(error instanceof Error ? error.message : "Unknown error");
     throw error;

@@ -8,8 +8,8 @@
     },
     "status": 201,
     "response": {
-      "token": "ghs_tkgC4It3zpkQgqDoXSdf99XolNMGYx3Sitgz",
-      "expires_at": "2022-08-15T10:51:11Z",
+      "token": "ghs_Xwfr03QjL91fsHvYWHHWXvDLlYX7su3c0b9D",
+      "expires_at": "2022-08-15T11:25:28Z",
       "permissions": {},
       "repository_selection": "selected"
     },
@@ -17,7 +17,7 @@
       "Server",
       "GitHub.com",
       "Date",
-      "Mon, 15 Aug 2022 09:51:11 GMT",
+      "Mon, 15 Aug 2022 10:25:28 GMT",
       "Content-Type",
       "application/json; charset=utf-8",
       "Content-Length",
@@ -27,7 +27,7 @@
       "Vary",
       "Accept",
       "ETag",
-      "\"73d6c864279102ec66753f6e0001871d766285c096f35d730c20f4604b9788fa\"",
+      "\"5871adf50b2c7aaf8166bc0e2783e0849cc9f75d136c111321b64cee2d60e545\"",
       "X-GitHub-Media-Type",
       "github.v3; param=machine-man-preview; format=json",
       "Access-Control-Expose-Headers",
@@ -49,7 +49,7 @@
       "Vary",
       "Accept-Encoding, Accept, X-Requested-With",
       "X-GitHub-Request-Id",
-      "DF6E:ED7E:4809A5:49F8E9:62FA170F",
+      "E0E2:10F92:601D59:625AF5:62FA1F18",
       "connection",
       "close"
     ],

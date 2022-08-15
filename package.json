@@ -17,7 +17,7 @@
     "xo": "xo",
     "build": "tsc",
     "build:check": "tsc --noEmit",
-    "bundle-github-action": "esbuild bin/github-action.ts --bundle --platform=node --sourcemap --format=esm --outfile=dist/github-action.js --banner:js=\"import { createRequire } from 'module';const require = createRequire(import.meta.url);\"",
+    "bundle-github-action": "esbuild bin/github-action.ts --bundle --platform=node --sourcemap --format=esm --outdir=dist --banner:js=\"import { createRequire } from 'module';const require = createRequire(import.meta.url);\"",
     "test": "c8 ava"
   },
   "repository": {
