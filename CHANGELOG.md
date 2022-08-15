@@ -1,3 +1,9 @@
+## [1.0.0-beta.5](https://github.com/vidavidorra/github-app-token/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2022-08-15)
+
+### Documentation
+
+- add simple API description, referring to the GitHub Action inputs for the options ([d5a6e0a](https://github.com/vidavidorra/github-app-token/commit/d5a6e0ac0bbf5d18820b76ad7fa886918571bf11))
+
 ## [1.0.0-beta.4](https://github.com/vidavidorra/github-app-token/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2022-08-15)
 
 ### Continuous Integration
