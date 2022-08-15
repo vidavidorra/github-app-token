@@ -248,3 +248,49 @@ test.serial(
     nockDone();
   },
 );
+
+test.serial(
+  'does not include user information without "includeUserInformation"',
+  async (t) => {
+    const {nockDone} = await back('without-user-information.json');
+    await t.notThrowsAsync(
+      authenticate({
+        appId: config.app.withOneInstallation.id,
+        privateKey: config.app.withOneInstallation.privateKey,
+        repositories: new Set([config.repository]),
+        includeUserInformation: false,
+      }).then((installationAuthentication) => {
+        t.false(installationAuthentication.includesUserInformation);
+      }),
+    );
+    nockDone();
+  },
+);
+
+test.serial(
+  'includes user information with "includeUserInformation"',
+  async (t) => {
+    const {nockDone} = await back('with-user-information.json');
+    await t.notThrowsAsync(
+      authenticate({
+        appId: config.app.withOneInstallation.id,
+        privateKey: config.app.withOneInstallation.privateKey,
+        repositories: new Set([config.repository]),
+        includeUserInformation: true,
+      }).then((installationAuthentication) => {
+        t.true(installationAuthentication.includesUserInformation);
+        if (installationAuthentication.includesUserInformation) {
+          t.is(
+            installationAuthentication.username,
+            config.app.withOneInstallation.username,
+          );
+          t.is(
+            installationAuthentication.email,
+            config.app.withOneInstallation.email,
+          );
+        }
+      }),
+    );
+    nockDone();
+  },
+);

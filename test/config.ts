@@ -41,6 +41,8 @@ const appSchema = z.object({
     ),
   owner: z.string().min(1).default('vidavidorra'),
   installationId: z.number().int().positive().default(1),
+  username: z.string().min(1).default('app[bot]'),
+  email: z.string().min(1).default('123+app[bot]@users.noreply.github.com'),
 });
 
 const schema = z.object({
@@ -71,6 +73,9 @@ const config = schema.parse({
       id: 214_511,
       privateKey: env.GAAT_APP_WITH_ONE_INSTALLATION_PRIVATE_KEY,
       installationId: 26_853_572,
+      username: 'test-with-one-installation[bot]',
+      email:
+        '108195451+test-with-one-installation[bot]@users.noreply.github.com',
     },
     withoutInstallation: {
       id: 213_406,

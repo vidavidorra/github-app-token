@@ -54,21 +54,24 @@ jobs:
 
 #### Inputs <!-- omit in toc -->
 
-| name             | type    | required | description                                    |
-| ---------------- | ------- | -------- | ---------------------------------------------- |
-| `appId`          | integer | ✓        | ID of the GitHub App                           |
-| `privateKey`     | string  | ✓        | private key of the GitHub App in PEM format    |
-| `repositories`   | string  |          | repositories to authenticate for               |
-| `owner`          | string  |          | owner of the repositories to authenticate for  |
-| `installationId` | integer |          | installation ID of the GitHub App installation |
+| name                     | type    | required | description                                               |
+| ------------------------ | ------- | -------- | --------------------------------------------------------- |
+| `appId`                  | integer | ✓        | ID of the GitHub App                                      |
+| `privateKey`             | string  | ✓        | private key of the GitHub App in PEM format               |
+| `repositories`           | string  |          | repositories to authenticate for                          |
+| `owner`                  | string  |          | owner of the repositories to authenticate for             |
+| `installationId`         | integer |          | installation ID of the GitHub App installation            |
+| `includeUserInformation` | boolean |          | whether or not to include user information in the outputs |
 
 #### Outputs <!-- omit in toc -->
 
-| name        | type   | description                          |
-| ----------- | ------ | ------------------------------------ |
-| `token`     | string | GitHub App installation access token |
-| `createdAt` | string | creation date of the token           |
-| `expiresAt` | string | expiration date of the token         |
+| name         | type     | description                                      |
+| ------------ | -------- | ------------------------------------------------ |
+| `token`      | string   | GitHub App installation access token             |
+| `createdAt`  | string   | creation date of the token                       |
+| `expiresAt`  | string   | expiration date of the token                     |
+| _`email`_    | _string_ | _email of the GitHub app user (**optional**)_    |
+| _`username`_ | _string_ | _username of the GitHub app user (**optional**)_ |
 
 ### API
 

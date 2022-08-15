@@ -54,8 +54,13 @@ const options = z.object({
   installationId: z
     .preprocess(stringArgToNumber, z.number().int().positive().optional())
     .optional(),
+  includeUserInformation: z.boolean().default(false),
 });
 
 type Options = z.infer<typeof options>;
 
-export {options, Options};
+type InputOptions = z.input<typeof options>;
+type AllowString<T, K extends keyof T> = Omit<T, K> & {[P in K]: T[K] | string};
+type Input = AllowString<InputOptions, 'appId' | 'installationId'>;
+
+export {options, Options, Input};

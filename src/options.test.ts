@@ -1,12 +1,11 @@
 import test from 'ava';
-import {Options, options} from './options.js';
+import {Input as OptionsInput, options} from './options.js';
 
-interface InputOptions
-  extends Partial<Omit<Options, 'appId' | 'installationId' | 'repositories'>> {
-  appId?: Options['appId'] | string;
-  installationId?: Options['installationId'] | string;
-  repositories?: Options['repositories'] | string[];
-}
+type Input = Partial<
+  Omit<OptionsInput, 'repositories'> & {
+    repositories: OptionsInput['repositories'] | string[];
+  }
+>;
 
 class Setup {
   private readonly _privateKey = {
@@ -15,9 +14,9 @@ class Setup {
     end: '-----END RSA PRIVATE KEY-----',
   };
 
-  private readonly _setKeys: Array<keyof InputOptions> = [];
+  private readonly _setKeys: Array<keyof Input> = [];
 
-  private _data: InputOptions = {
+  private _data: Input = {
     appId: 1,
     privateKey: [
       this._privateKey.begin,
@@ -27,6 +26,7 @@ class Setup {
     installationId: undefined,
     repositories: new Set(['bluebird']),
     owner: undefined,
+    includeUserInformation: undefined,
   };
 
   get data() {
@@ -42,7 +42,7 @@ class Setup {
     return key;
   }
 
-  appId(appId: InputOptions['appId']) {
+  appId(appId: Input['appId']) {
     return this.set('appId', appId);
   }
 
@@ -59,18 +59,21 @@ class Setup {
     return this.set('repositories', repositories);
   }
 
-  owner(owner: InputOptions['owner']) {
+  owner(owner: Input['owner']) {
     return this.set('owner', owner);
   }
 
-  installationId(installationId: InputOptions['installationId']) {
+  installationId(installationId: Input['installationId']) {
     return this.set('installationId', installationId);
   }
 
-  set<T extends keyof InputOptions>(
-    key: T,
-    value: InputOptions[T] | false,
-  ): this {
+  includeUserInformation(
+    includeUserInformation: Input['includeUserInformation'],
+  ) {
+    return this.set('includeUserInformation', includeUserInformation);
+  }
+
+  set<T extends keyof Input>(key: T, value: Input[T] | false): this {
     if (value !== false) {
       this._data[key] = value;
     }
@@ -204,3 +207,16 @@ test(failsParsing, setup().installationId('0'), 'zero');
 test(failsParsing, setup().installationId(-1), 'negative');
 test(failsParsing, setup().installationId('-1'), 'negative');
 test(failsParsing, setup().installationId('abc'), 'non-numeric');
+
+test(succeedsParsing, setup().includeUserInformation(undefined), 'undefined');
+test(succeedsParsing, setup().includeUserInformation(true), 'true');
+test(succeedsParsing, setup().includeUserInformation(false), 'false');
+test('defaults "includeUserInformation" to "false"', (t) => {
+  const parsed = options.safeParse(
+    setup().includeUserInformation(undefined).data,
+  );
+  t.true(parsed.success);
+  if (parsed.success) {
+    t.false(parsed.data.includeUserInformation);
+  }
+});
