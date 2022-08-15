@@ -1,10 +1,12 @@
-# GitHub Action App token <!-- omit in toc -->
+# GitHub App token <!-- omit in toc -->
 
-[GitHub Action][github-action] to authenticate as a [GitHub App][github-app].
+Authenticate as a [GitHub App][github-app], from a [GitHub Action][github-action] or TypeScript/JavaScript code.
 
 - Authenticate as a [GitHub App][github-app].
 - Fine control over permissions.
 - No need for dedicated user for personal access token permission control.
+- Use [GitHub Actions][github-action] to authenticate as a [GitHub App][github-app].
+- Authenticate as a [GitHub App][github-app] from TypeScript or JavaScript code.
 
 ---
 
