@@ -1,3 +1,9 @@
+### [1.0.1](https://github.com/vidavidorra/github-app-token/compare/v1.0.0...v1.0.1) (2023-04-15)
+
+### Tests
+
+- remove unused @octokit/request-error error instance checks ([ece6b33](https://github.com/vidavidorra/github-app-token/commit/ece6b3337b389aed57b754d37855da031e27f8dc))
+
 ## 1.0.0 (2022-08-15)
 
 ### Features
