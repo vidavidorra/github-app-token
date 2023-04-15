@@ -49,7 +49,6 @@
   "devDependencies": {
     "@ava/typescript": "3.0.1",
     "@commitlint/cli": "16.2.3",
-    "@octokit/request-error": "3.0.0",
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/exec": "6.0.3",
     "@semantic-release/git": "10.0.1",
@@ -96,9 +95,6 @@
   },
   "xo": {
     "prettier": true,
-    "rules": {
-      "object-curly-spacing": "off"
-    },
     "space": true
   },
   "commitlint": {
