@@ -63,4 +63,4 @@ type InputOptions = z.input<typeof options>;
 type AllowString<T, K extends keyof T> = Omit<T, K> & {[P in K]: T[K] | string};
 type Input = AllowString<InputOptions, 'appId' | 'installationId'>;
 
-export {options, Options, Input};
+export {options, type Options, type Input};

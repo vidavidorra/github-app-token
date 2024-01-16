@@ -1,5 +1,5 @@
 import core from '@actions/core';
-import {authenticate} from './authenticate.js';
+import {type authenticate} from './authenticate.js';
 
 async function run(auth: typeof authenticate): Promise<void> {
   try {

@@ -1,6 +1,6 @@
 export {
-  InstallationAuthentication,
+  type InstallationAuthentication,
   authenticate as default,
   authenticate,
 } from './authenticate.js';
-export {Options, options} from './options.js';
+export {type Options, options} from './options.js';

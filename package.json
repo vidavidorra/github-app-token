@@ -41,33 +41,40 @@
     "node": ">=16"
   },
   "dependencies": {
-    "@actions/core": "1.9.0",
-    "@actions/github": "5.0.1",
-    "@octokit/auth-app": "3.6.1",
-    "zod": "3.17.3"
+    "@actions/core": "1.10.1",
+    "@actions/github": "6.0.0",
+    "@octokit/auth-app": "6.0.2",
+    "msw": "2.0.12",
+    "zod": "3.22.4"
   },
   "devDependencies": {
-    "@ava/typescript": "3.0.1",
-    "@commitlint/cli": "16.2.3",
-    "@semantic-release/changelog": "6.0.1",
+    "@ava/typescript": "4.1.0",
+    "@commitlint/cli": "18.4.4",
+    "@octokit/types": "12.4.0",
+    "@semantic-release/changelog": "6.0.3",
     "@semantic-release/exec": "6.0.3",
     "@semantic-release/git": "10.0.1",
-    "@types/sinon": "10.0.12",
-    "@vercel/ncc": "0.34.0",
-    "@vidavidorra/commitlint-config": "3.2.7",
-    "ava": "4.3.1",
-    "c8": "7.11.2",
-    "dotenv": "16.0.1",
-    "esbuild": "0.14.49",
-    "husky": "7.0.4",
-    "lint-staged": "12.3.8",
-    "nock": "13.2.4",
+    "@types/sinon": "17.0.2",
+    "@vercel/ncc": "0.38.1",
+    "@vidavidorra/commitlint-config": "6.0.1",
+    "ava": "6.0.1",
+    "c8": "9.0.0",
+    "dotenv": "16.3.1",
+    "esbuild": "0.19.11",
+    "husky": "8.0.3",
+    "lint-staged": "15.2.0",
+    "nock": "13.4.0",
     "npm-run-all": "4.1.5",
-    "prettier": "2.6.2",
-    "semantic-release": "19.0.2",
-    "sinon": "14.0.0",
-    "typescript": "4.7.4",
-    "xo": "0.48.0"
+    "prettier": "3.1.1",
+    "semantic-release": "22.0.12",
+    "sinon": "17.0.1",
+    "typescript": "5.3.3",
+    "xo": "0.56.0"
+  },
+  "commitlint": {
+    "extends": [
+      "@vidavidorra"
+    ]
   },
   "ava": {
     "files": [
@@ -80,7 +87,9 @@
         "test/": "dist/test/"
       },
       "compile": "tsc"
-    }
+    },
+    "workerThreads": false,
+    "verbose": true
   },
   "c8": {
     "include": [
@@ -96,11 +105,6 @@
   "xo": {
     "prettier": true,
     "space": true
-  },
-  "commitlint": {
-    "extends": [
-      "@vidavidorra"
-    ]
   },
   "prettier": {
     "singleQuote": true,

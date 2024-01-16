@@ -1,5 +1,5 @@
 import test from 'ava';
-import {Input as OptionsInput, options} from './options.js';
+import {type Input as OptionsInput, options} from './options.js';
 
 type Input = Partial<
   Omit<OptionsInput, 'repositories'> & {
@@ -114,8 +114,8 @@ const succeedsParsing = test.macro<[Setup, string]>({
   },
 });
 
-const failsParsingRegex = test.macro({
-  exec(t, setup: Setup, _prefix: string, message: RegExp) {
+const failsParsingRegex = test.macro<[Setup, string, RegExp]>({
+  exec(t, setup, _, message) {
     const parsed = options.safeParse(setup.data);
 
     t.false(parsed.success);

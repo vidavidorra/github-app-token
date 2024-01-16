@@ -1,18 +1,19 @@
-import {createAppAuth} from '@octokit/auth-app';
-import {getOctokit} from '@actions/github';
-import {Options, Input, options as optionsSchema} from './options.js';
+import authApp from '@octokit/auth-app';
+import github from '@actions/github';
+import {type Options, type Input, options as optionsSchema} from './options.js';
+import {installationId} from './installation-id.js';
 
-interface InstallationAuthenticationWithoutUserInformation {
+type InstallationAuthenticationWithoutUserInformation = {
   token: string;
   createdAt: string;
   expiresAt: string;
   includesUserInformation: false;
-}
+};
 
-interface UserInformation {
+type UserInformation = {
   email: string;
   username: string;
-}
+};
 
 type InstallationAuthenticationWithUserInformation = Omit<
   InstallationAuthenticationWithoutUserInformation,
@@ -30,19 +31,27 @@ class Authenticate {
   }
 
   async authenticate(): Promise<InstallationAuthentication> {
-    const auth = createAppAuth({
+    console.log('authenticate => createAppAuth');
+    const auth = authApp.createAppAuth({
       appId: this._options.appId,
       privateKey: this._options.privateKey,
     });
-    const appAuth = await auth({type: 'app'});
-    const octokit = getOctokit(appAuth.token);
 
+    console.log('authenticate => auth');
+    const appAuth = await auth({type: 'app'});
+
+    console.log('authenticate => getOctokit');
+    const octokit = github.getOctokit(appAuth.token);
+
+    console.log('authenticate => installationId');
     const installationId = await this.installationId(octokit);
+    console.log('authenticate => auth', installationId);
     const installationAuth = await auth({
       installationId,
       type: 'installation',
       repositoryNames: [...this._options.repositories],
     });
+    console.log('authenticate <= auth');
     const installationAuthentication: InstallationAuthentication = {
       token: installationAuth.token,
       createdAt: installationAuth.createdAt,
@@ -70,41 +79,19 @@ class Authenticate {
   }
 
   private async installationId(
-    octokit: ReturnType<typeof getOctokit>,
+    octokit: ReturnType<typeof github.getOctokit>,
   ): Promise<number> {
     if (this._options.installationId !== undefined) {
       return this._options.installationId;
     }
 
+    console.log('installationId => listInstallations');
     const installations = await octokit.rest.apps.listInstallations();
-    if (installations.data.length === 0) {
-      throw new Error('The GitHub App must have at least one installation');
-    }
-
-    if (this._options.owner === undefined && installations.data.length > 1) {
-      throw new Error(
-        'Without "owner", the GitHub App must have exactly one installation',
-      );
-    }
-
-    if (this._options.owner === undefined) {
-      return installations.data[0].id;
-    }
-
-    const installation = installations.data.find(
-      (installation) =>
-        installation.account?.login === this._options.owner ||
-        installation.account?.slug === this._options.owner,
-    );
-    if (installation === undefined) {
-      throw new Error('The "owner" must have the GitHub App installed');
-    }
-
-    return installation.id;
+    return installationId(installations, this._options.owner);
   }
 
   private async userInformation(
-    octokit: ReturnType<typeof getOctokit>,
+    octokit: ReturnType<typeof github.getOctokit>,
     token: string,
   ): Promise<UserInformation | undefined> {
     const app = await octokit.rest.apps.getAuthenticated();
@@ -113,7 +100,10 @@ class Authenticate {
     }
 
     const username = `${app.data.slug}[bot]`;
-    const user = await getOctokit(token).rest.users.getByUsername({username});
+    console.log('user info => getOctokit');
+    const user = await github
+      .getOctokit(token)
+      .rest.users.getByUsername({username});
     const email = `${user.data.id}+${username}@users.noreply.github.com`;
 
     return {username, email};
@@ -127,4 +117,4 @@ async function authenticate(
 }
 
 export default authenticate;
-export {authenticate, InstallationAuthentication};
+export {authenticate, type InstallationAuthentication};

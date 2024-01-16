@@ -1,8 +1,8 @@
-import {fake, stub, SinonStub} from 'sinon';
+import {fake, stub, type SinonStub} from 'sinon';
 import core from '@actions/core';
-import anyTest, {TestFn} from 'ava';
-import config from '../test/config.js';
-import {InstallationAuthentication} from './authenticate.js';
+import anyTest, {type TestFn} from 'ava';
+import {config} from './_config.test.js';
+import {type InstallationAuthentication} from './authenticate.js';
 import {run} from './github-action.js';
 
 const test = anyTest as TestFn<{
