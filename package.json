@@ -1,6 +1,6 @@
 {
   "name": "@vidavidorra/github-app-token",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Authenticate as a GitHub App",
   "type": "module",
   "exports": "./dist/index.js",

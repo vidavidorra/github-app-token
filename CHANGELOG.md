@@ -1,3 +1,13 @@
+### [1.0.2](https://github.com/vidavidorra/github-app-token/compare/v1.0.1...v1.0.2) (2024-03-26)
+
+### ⚠ BREAKING CHANGES
+
+- add a note that this project is no longer maintained and suggest a replacement
+
+### Documentation
+
+- add a note that this project is no longer maintained and suggest a replacement ([18ee109](https://github.com/vidavidorra/github-app-token/commit/18ee10916af9507236f868a9cd46cc233aa87cc5))
+
 ### [1.0.1](https://github.com/vidavidorra/github-app-token/compare/v1.0.0...v1.0.1) (2023-04-15)
 
 ### Tests
