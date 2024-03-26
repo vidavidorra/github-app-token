@@ -1,5 +1,14 @@
 # GitHub App token <!-- omit in toc -->
 
+> [!CAUTION]
+> This project is no longer maintained.
+
+# ⚠ This project is no longer maintained <!-- omit in toc -->
+
+This project is no longer maintained. In Juni 2023 [**GitHub**][github] released the first version of [`actions/create-github-app-token`](https://github.com/actions/create-github-app-token). That project does the same as this one did and offers more features and security improvements. Therefore, this project is now deprecated and I suggest using [`actions/create-github-app-token`](https://github.com/actions/create-github-app-token) as a replacement. I've created [`vidavidorra/github-action-app-user`](https://github.com/vidavidorra/github-action-app-user) as an addtion to still get the user information. Please see the usage of [`vidavidorra/github-action-app-user`](https://github.com/vidavidorra/github-action-app-user) to to see an example of the combined replacement for the full functionality this action offered.
+
+---
+
 Authenticate as a [GitHub App][github-app], from a [GitHub Action][github-action] or TypeScript/JavaScript code.
 
 - Authenticate as a [GitHub App][github-app].
@@ -128,3 +137,4 @@ The full text of the license is available in the [LICENSE](LICENSE.md) file in t
 
 [github-action]: https://github.com/features/actions/
 [github-app]: https://docs.github.com/en/developers/apps/getting-started-with-apps/about-apps
+[github]: https://github.com/
